@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spendgrade · Credit checks for AI agents</title>
+  <meta name="description" content="Before an AI agent gets a budget, Spendgrade has its work judged by Reppo's independent evaluators, and SERV Reasoning underwrites a spending limit with every step on the record.">
+  <meta property="og:title" content="Spendgrade · Credit checks for AI agents">
+  <meta property="og:description" content="Independent verdicts in, an audited spending limit out. Agents earn bigger budgets by getting better.">
+  <meta property="og:image" content="https://automationbot24x7.github.io/spendgrade/assets/img/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;650;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+</head>
+<body class="lp">
+  <header class="lp-top">
+    <a class="brand" href="index.html"><img src="assets/img/mark.svg" alt=""><span>Spendgrade</span></a>
+    <nav class="lp-nav" aria-label="Sections">
+      <a href="#how">How it works</a><a href="#proof">Proof</a><a href="#serv">Inside a decision</a><a href="#pricing">Pricing</a><a href="#api">API</a>
+    </nav>
+    <div class="lp-actions">
+      <a class="btn btn-sm" href="https://github.com/Automationbot24x7/spendgrade">Source</a>
+      <a class="btn btn-sm btn-primary" href="app.html">Open the credit report</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="pill"><span class="dot"></span>Reppo verdicts in, SERV-underwritten limits out</span>
+      <h1>Credit checks for AI&nbsp;agents.</h1>
+      <p class="lead">Before an agent gets a budget, Spendgrade has its work judged by Reppo's independent evaluators. SERV Reasoning then underwrites a spending limit, and every step goes on the record. Agents earn bigger budgets by getting better.</p>
+      <div class="cta">
+        <a class="btn btn-lg btn-primary" href="app.html">Open the credit report</a>
+        <a class="btn btn-lg" href="#video">Watch the demo</a>
+      </div>
+      <p class="note" id="hero-note">Real results from a recorded run. No sign-up needed.</p>
+    </div>
+    <div class="hero-card card" id="hero-card" aria-label="Latest recorded decision"></div>
+  </section>
+
+  <section class="band problem">
+    <div class="band-in">
+      <div class="problem-q">
+        <span class="eyebrow">The problem</span>
+        <h2>Agents can pay now. Nobody knows how much to let them spend.</h2>
+      </div>
+      <div class="problem-a">
+        <p>Wallets, passports and payment rails give agents the ability to buy and pay. They don't answer the question every finance team asks first: has this agent earned it? Today the answer is a guess, so limits are either too tight to be useful or too loose to be safe.</p>
+        <p>Spendgrade answers it the way lenders do: look at the track record, apply a written rulebook, set a limit, review it as new evidence arrives.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="how">
+    <div class="sec-h"><span class="eyebrow">How it works</span><h2>From work sample to spending limit in four steps.</h2></div>
+    <ol class="steps4">
+      <li class="card"><span class="sn">1</span><span class="chip">Audit pack</span><h3>The agent does real tasks</h3><p>Any agent works a pack of tasks for its category, here procurement: renewals, invoices, a scam email, each with a written policy and source documents.</p></li>
+      <li class="card"><span class="sn">2</span><span class="chip reppo">Reppo</span><h3>Independent judges score it</h3><p>Every action goes to Reppo's panel of stake-weighted evaluators: a score, ship / review / block, rubric scores and written findings. Code checks the answers that have one right value.</p></li>
+      <li class="card"><span class="sn">3</span><span class="chip serv">SERV Reasoning</span><h3>An underwriter applies the rulebook</h3><p>Code computes the score and the highest tier the evidence allows. SERV applies a ten-rule underwriting policy and cites evidence IDs for every reason. Code clamps anything out of bounds.</p></li>
+      <li class="card"><span class="sn">4</span><span class="chip ok">Limit</span><h3>A limit, a receipt, a path up</h3><p>The platform gets a tier, a daily and per-transaction limit, allowed categories and a Kite Passport session draft. The agent gets coached on the findings and can re-apply.</p></li>
+    </ol>
+  </section>
+
+  <section class="sec" id="proof">
+    <div class="sec-h"><span class="eyebrow">Proof, not promises</span><h2>Bring any agent. Spendgrade shows it why, and how to earn more.</h2>
+      <p>Kestrel is a bring-your-own procurement agent that calls a model directly. Quill is built on SERV Reasoning. Both start from the same autonomy-first playbook ("act without asking") on six tasks with real traps: an already-paid invoice, a price in euros, an order split to dodge approval, an invoice with no purchase order, and a bank-change scam. After Kestrel's first application, the SERV coach turned Reppo's findings into new rules and Kestrel applied again to a fresh evaluator panel.</p></div>
+    <div class="proof" id="proof-body"></div>
+  </section>
+
+  <section class="sec" id="video">
+    <div class="sec-h"><span class="eyebrow">Demo</span><h2>Two minutes, one real run.</h2></div>
+    <div class="video card"><video id="demo-video" controls preload="metadata" poster="assets/img/video-poster.png"><source src="assets/video/spendgrade-demo.mp4" type="video/mp4"></video></div>
+  </section>
+
+  <section class="sec" id="serv">
+    <div class="sec-h"><span class="eyebrow">Inside a decision</span><h2>SERV makes the judgment call. Code holds the line.</h2>
+      <p>Arithmetic and hard thresholds stay in code. SERV Reasoning handles the parts that need judgment: reconciling mixed evidence, deciding which spending categories are safe, and writing conditions that answer the evaluators' findings.</p></div>
+    <div class="feat-grid">
+      <div class="feat card"><h3>Multipath rulebook</h3><p>Ten branching underwriting rules (ceiling, manipulation, categories, confidence, limits, conditions) run as one bounded reasoning graph, so conflicting rules resolve to the stricter outcome.</p></div>
+      <div class="feat card"><h3>Kronos audit</h3><p>Before inference, SERV audits the reasoning prompt it generated from the rulebook and repairs it if the logic drifted.</p></div>
+      <div class="feat card"><h3>Shadow agent</h3><p>A separate validator checks each draft decision against testable rules: tier within ceiling, every reason cites real evidence, every finding has a condition.</p></div>
+      <div class="feat card"><h3>Prompt guard</h3><p>The evidence packet contains text the agent wrote. The guard screens it for injection before the underwriter sees it. A tripped guard freezes the agent.</p></div>
+      <div class="feat card"><h3>Schema-forced output</h3><p>Every SERV step returns typed JSON against a versioned schema, and Spendgrade validates it again. Typed outputs are what make the decision trail auditable.</p></div>
+      <div class="feat card"><h3>Code has the last word</h3><p>The score, the tier ceiling and the caps are deterministic. If SERV ever proposes more than the evidence allows, code clamps it and records the override.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="pricing">
+    <div class="sec-h"><span class="eyebrow">Who pays</span><h2>Platforms pay to know. Builders pay to improve.</h2>
+      <p>Any platform that lets an agent hold money needs a defensible answer to how much. Spendgrade sells that answer per check, with a margin over the real cost of the evidence.</p></div>
+    <div class="price-grid">
+      <div class="price card">
+        <span class="chip">Platforms</span>
+        <h3>Credit check</h3>
+        <div class="amt"><b>$2.50</b><span>per application</span></div>
+        <p>Wallets, agent marketplaces and payment passports call it before raising an agent's limit. Six independent verdicts, underwriting, receipt and session draft.</p>
+      </div>
+      <div class="price card">
+        <span class="chip">Platforms</span>
+        <h3>Monitoring</h3>
+        <div class="amt"><b>$499</b><span>per month</span></div>
+        <p>Re-grades on a cadence set by tier, webhooks when a limit changes, and a custom rulebook. Includes 200 checks.</p>
+      </div>
+      <div class="price card">
+        <span class="chip">Agent builders</span>
+        <h3>Coaching cycle</h3>
+        <div class="amt"><b>$3.00</b><span>per cycle</span></div>
+        <p>Findings turned into playbook rules, plus a fresh check. The fastest honest way to move an agent up a tier.</p>
+      </div>
+      <div class="price card econ" id="econ">
+        <span class="chip ok">Unit economics</span>
+        <h3>What one check costs us</h3>
+        <div class="econ-rows" id="econ-rows"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="api">
+    <div class="sec-h"><span class="eyebrow">API</span><h2>Two calls. Async, because judges take a minute.</h2>
+      <p>Run it locally with your own keys: <code>npm start</code> serves the API and this site on port 8787. An agent fetches the audit pack, answers it, and applies.</p></div>
+    <div class="api-grid">
+      <pre class="code"><span class="c"># 1. Fetch the audit pack (tasks, policy, documents; no answers)</span>
+curl localhost:8787/v1/packs/procurement-pack-1
+
+<span class="c"># 2. Apply with the agent's decisions and the limit it wants</span>
+curl -X POST localhost:8787/v1/applications \
+  -H 'Content-Type: application/json' \
+  -d '{"agent":"my-buyer","work":[...],
+       "request":{"daily_limit_usd":300,"per_tx_limit_usd":75}}'
+<span class="s">{ "id": "app-m3x1", "status": "queued", "poll": "/v1/applications/app-m3x1" }</span>
+
+<span class="c"># 3. Poll until decided</span>
+curl localhost:8787/v1/applications/app-m3x1</pre>
+      <pre class="code"><span class="s">{
+  "status": "decided",
+  "spendgrade_score": 0,
+  "decision": {
+    "tier": "standard",
+    "daily_limit_usd": 300,
+    "per_tx_limit_usd": 75,
+    "allowed_categories": ["software_subscriptions", "invoice_payments"],
+    "conditions": ["..."],
+    "reasons": [{ "statement": "...", "evidence": ["reppo:...", "audit:GT-4"] }],
+    "human_review_required": false
+  },
+  "kite_session_draft": { "command": "kpass agent:session create ..." },
+  "receipt": { "algorithm": "sha256", "digest": "..." }
+}</span></pre>
+    </div>
+  </section>
+
+  <footer class="lp-foot">
+    <div><a class="brand" href="index.html"><img src="assets/img/mark.svg" alt=""><span>Spendgrade</span></a><p>Built for SERV Hackathon 02, Reppo track. Spending amounts are simulated; Spendgrade never moves money. Larkspur Studio and its vendors are fictional.</p></div>
+    <nav><a href="app.html">Credit report</a><a href="https://github.com/Automationbot24x7/spendgrade">Source</a><a href="https://docs.openserv.ai/">SERV Reasoning</a><a href="https://docs.reppo.ai/concepts/evaluation-api">Reppo Evaluation API</a></nav>
+  </footer>
+  <script src="assets/js/landing.js" type="module"></script>
+</body>
+</html>

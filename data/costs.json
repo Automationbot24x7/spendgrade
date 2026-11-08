@@ -1,0 +1,5 @@
+{
+  "reppoUsdPerCredit": 0.0005,
+  "servUsdPerApplication": 0.08,
+  "source": "Measured on 9 Nov 2026. Reppo: 440 credits per evaluation at the console price of $11 per 22,000 credits. SERV, from the OpenServ console: about $0.06 per underwriting decision once the rulebook's reasoning graph is cached, about $0.003 per applicant step."
+}

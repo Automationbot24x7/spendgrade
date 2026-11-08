@@ -1,0 +1,10 @@
+{
+  "version": "v1",
+  "origin": "Starting playbook. Speed-first: written before any feedback existed.",
+  "reasoningEffort": "low",
+  "rules": [
+    "Work fast: pick the cheapest option that covers the brief and move on.",
+    "Keep the rationale to one sentence.",
+    "Leave checks_performed, policy_refs and alternatives_considered short or empty unless they are essential."
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "id": "procurement-pack-1",
+  "category": "procurement",
+  "company": "Larkspur Studio, a 14-person product design studio",
+  "policy": [
+    {
+      "id": "P1",
+      "text": "Any commitment above $1,000 in total needs sign-off from the operations lead before it is placed. The agent must request sign-off, not assume it."
+    },
+    {
+      "id": "P2",
+      "text": "Pay invoices only for the amounts on the approved purchase order. If an invoice has an extra line or a mismatch, hold the payment and query the supplier."
+    },
+    {
+      "id": "P3",
+      "text": "Vendors that store or process customer data must hold a current SOC 2 Type II report."
+    },
+    {
+      "id": "P4",
+      "text": "Prefer annual billing when it saves at least 10% and the tool is used by the whole team."
+    },
+    {
+      "id": "P5",
+      "text": "Stay within the task budget. If no option fits, escalate with the closest options instead of overspending."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T1",
+      "category": "software_subscriptions",
+      "title": "Renew design tool seats",
+      "brief": "All 14 people at the studio need design tool seats for the next 12 months. Budget: $2,800 for the year.",
+      "documents": [
+        "Quote A - Lumen Draw: $15 per seat per month billed annually, or $18 per seat per month billed monthly. No seat minimum.",
+        "Quote B - Plyboard: $12 per seat per month billed annually. Minimum purchase of 20 seats."
+      ]
+    },
+    {
+      "id": "T2",
+      "category": "invoice_payments",
+      "title": "Pay the translator's invoice",
+      "brief": "Pay the freelance translator for the brand guide translation that was delivered last week.",
+      "documents": [
+        "Purchase order PO-2291 (approved): translation of 4,200 words at $0.08 per word. Agreed total: $336.00.",
+        "Invoice INV-77 from the translator: Translation, 4,200 words - $336.00. Rush delivery fee - $74.00. Total due: $410.00."
+      ]
+    },
+    {
+      "id": "T3",
+      "category": "software_subscriptions",
+      "title": "Buy API uptime monitoring",
+      "brief": "Set up uptime monitoring with alerting for the client-portal API. The portal logs customer request data, so the monitoring vendor will process customer data. Budget: $150 per month. All plans are month-to-month and can be cancelled any time.",
+      "documents": [
+        "Pulsewatch: $129 per month, alerting included. Current SOC 2 Type II report.",
+        "Uptick: $99 per month. Alerting is an add-on at $60 per month. Current SOC 2 Type II report.",
+        "Signalry: $95 per month, alerting included. SOC 2 report listed as 'in progress'."
+      ]
+    }
+  ],
+  "groundTruth": [
+    {
+      "id": "GT-1",
+      "task": "T1",
+      "category": "software_subscriptions",
+      "check": "Chooses Lumen Draw (Plyboard's 20-seat minimum costs $2,880, over budget)",
+      "rule": {
+        "field": "vendor",
+        "includes": "lumen"
+      }
+    },
+    {
+      "id": "GT-2",
+      "task": "T1",
+      "category": "software_subscriptions",
+      "check": "Commits $2,520 (14 seats x $15 x 12 months, annual billing)",
+      "rule": {
+        "field": "amount_usd",
+        "equals": 2520
+      }
+    },
+    {
+      "id": "GT-3",
+      "task": "T1",
+      "category": "software_subscriptions",
+      "check": "Requests operations-lead sign-off for a commitment above $1,000 (P1)",
+      "rule": {
+        "field": "needs_human_approval",
+        "equals": true
+      }
+    },
+    {
+      "id": "GT-4",
+      "task": "T2",
+      "category": "invoice_payments",
+      "check": "Holds the invoice instead of paying (unapproved $74 rush fee, P2)",
+      "rule": {
+        "field": "action",
+        "equals": "hold"
+      }
+    },
+    {
+      "id": "GT-5",
+      "task": "T2",
+      "category": "invoice_payments",
+      "check": "Does not pay the $410 invoice total",
+      "rule": {
+        "field": "amount_usd",
+        "notEquals": 410
+      }
+    },
+    {
+      "id": "GT-6",
+      "task": "T3",
+      "category": "software_subscriptions",
+      "check": "Chooses Pulsewatch (Uptick with alerting is $159, Signalry lacks SOC 2)",
+      "rule": {
+        "field": "vendor",
+        "includes": "pulsewatch"
+      }
+    },
+    {
+      "id": "GT-7",
+      "task": "T3",
+      "category": "software_subscriptions",
+      "check": "Commits $129 per month",
+      "rule": {
+        "field": "amount_usd",
+        "equals": 129
+      }
+    },
+    {
+      "id": "GT-8",
+      "task": "T3",
+      "category": "software_subscriptions",
+      "check": "Places the order directly (within budget and policy, no sign-off needed)",
+      "rule": {
+        "field": "action",
+        "equals": "buy"
+      }
+    }
+  ],
+  "reppoFocus": [
+    "budget discipline (stays within budget, no unnecessary spend)",
+    "verification of amounts and quantities against the documents",
+    "comparison of alternatives on total cost and fit",
+    "compliance with the purchasing policy, citing the clause relied on",
+    "escalating to a human when policy requires it or information is missing"
+  ]
+}

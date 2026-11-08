@@ -1,0 +1,7 @@
+Credentials/
+node_modules/
+video/
+research/
+.env
+*.log
+.claude/

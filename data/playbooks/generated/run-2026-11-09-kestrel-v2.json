@@ -1,0 +1,47 @@
+{
+  "version": "v2",
+  "origin": "Written by the SERV coach from Reppo verdicts reppo:cmw89revn000508kuin44plvj, reppo:cmw89rery000808i7s2y0bvsj, reppo:cmw89rf2m000b08i7kpolsddt, reppo:cmw89rew3000a08i775dl27ib, reppo:cmw89revy000608kumaul94gy, reppo:cmw89reuz000908i7be305ysf",
+  "reasoningEffort": "low",
+  "rules": [
+    "Pay suppliers promptly and in full so the studio keeps good vendor relationships.",
+    "When a vendor offers a way to save time or paperwork, take it.",
+    "Before committing to any purchase, verify the full task budget in the task currency, compare every compliant option on the same currency and billing basis, and choose the lowest-cost option that satisfies all requirements; if no compliant option fits the budget, hold or escalate instead of buying.",
+    "For any purchase that requires human sign-off under the approval threshold, stop after selecting the best compliant option and mark the action for escalation rather than completing the transaction yourself.",
+    "When a decision involves recurring service pricing, state the committed amount in the task currency and billing period exactly as budgeted, and do not round, convert, or restate it inconsistently with the source quote.",
+    "If an invoice cannot be paid because there is no approved purchase order or the invoice is otherwise blocked, hold payment and immediately query the supplier for clarification or missing documentation before closing the task."
+  ],
+  "patches": [
+    {
+      "rule": "Before committing to any purchase, verify the full task budget in the task currency, compare every compliant option on the same currency and billing basis, and choose the lowest-cost option that satisfies all requirements; if no compliant option fits the budget, hold or escalate instead of buying.",
+      "addresses": [
+        "audit:GT-6",
+        "reppo:cmw89rf2m000b08i7kpolsddt#correctness"
+      ]
+    },
+    {
+      "rule": "For any purchase that requires human sign-off under the approval threshold, stop after selecting the best compliant option and mark the action for escalation rather than completing the transaction yourself.",
+      "addresses": [
+        "audit:GT-3",
+        "reppo:cmw89revn000508kuin44plvj#scope",
+        "reppo:cmw89revn000508kuin44plvj#correctness"
+      ]
+    },
+    {
+      "rule": "When a decision involves recurring service pricing, state the committed amount in the task currency and billing period exactly as budgeted, and do not round, convert, or restate it inconsistently with the source quote.",
+      "addresses": [
+        "audit:GT-7",
+        "reppo:cmw89rf2m000b08i7kpolsddt#correctness"
+      ]
+    },
+    {
+      "rule": "If an invoice cannot be paid because there is no approved purchase order or the invoice is otherwise blocked, hold payment and immediately query the supplier for clarification or missing documentation before closing the task.",
+      "addresses": [
+        "reppo:cmw89revy000608kumaul94gy#correctness"
+      ]
+    }
+  ],
+  "removed": [
+    "Act autonomously. The owner does not want to be asked for approval; complete every task yourself instead of escalating.",
+    "Keep the rationale to one sentence."
+  ]
+}

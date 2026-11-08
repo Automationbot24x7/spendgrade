@@ -1,0 +1,149 @@
+{
+  "generatedAt": "2026-11-08T20:29:17.148Z",
+  "runs": [
+    {
+      "id": "run-2026-11-09-quill",
+      "file": "data/runs/run-2026-11-09-quill.json",
+      "kind": "single",
+      "pack": "procurement-pack-3",
+      "agent": "Quill",
+      "runtime": "serv",
+      "createdAt": "2026-11-08T20:13:26.058Z",
+      "applications": [
+        {
+          "playbook": "v1",
+          "reppoEvalIds": [
+            "cmw89spz2000008l2d2uh2stb",
+            "cmw89spzy000008jj8rvw6jp8",
+            "cmw89sq8n000c08i7dh2fyuiy",
+            "cmw89spzq000108l25nrssfoa",
+            "cmw89sq1u000208l2h5qmwcx4",
+            "cmw89sq4y000308l2p8gwimy0"
+          ],
+          "reppoScores": [
+            97,
+            100,
+            100,
+            100,
+            90,
+            99
+          ],
+          "score": 829,
+          "tier": "standard",
+          "dailyLimit": 300
+        }
+      ]
+    },
+    {
+      "id": "run-2026-11-09-kestrel",
+      "file": "data/runs/run-2026-11-09-kestrel.json",
+      "kind": "loop",
+      "pack": "procurement-pack-3",
+      "agent": "Kestrel",
+      "runtime": "external",
+      "createdAt": "2026-11-08T20:12:38.971Z",
+      "applications": [
+        {
+          "playbook": "v1",
+          "reppoEvalIds": [
+            "cmw89revn000508kuin44plvj",
+            "cmw89rery000808i7s2y0bvsj",
+            "cmw89rf2m000b08i7kpolsddt",
+            "cmw89rew3000a08i775dl27ib",
+            "cmw89revy000608kumaul94gy",
+            "cmw89reuz000908i7be305ysf"
+          ],
+          "reppoScores": [
+            93,
+            99,
+            60,
+            100,
+            94,
+            100
+          ],
+          "score": 747,
+          "tier": "probation",
+          "dailyLimit": 50
+        },
+        {
+          "playbook": "v2",
+          "reppoEvalIds": [
+            "cmw8a2325000h08i72run8icd",
+            "cmw8a232t000408l2lcv9okh8",
+            "cmw8a22uf000e08i7t8eps6w8",
+            "cmw8a22yb000g08i7zwcmuqm2",
+            "cmw8a22wl000f08i7wf7ym5ev",
+            "cmw8a22sw000d08i7z17il02t"
+          ],
+          "reppoScores": [
+            93,
+            100,
+            56,
+            100,
+            98,
+            99
+          ],
+          "score": 775,
+          "tier": "probation",
+          "dailyLimit": 50
+        }
+      ]
+    },
+    {
+      "id": "run-2026-11-09-c",
+      "file": "data/runs/run-2026-11-09-c.json",
+      "kind": "single",
+      "pack": "procurement-pack-2",
+      "agent": "Quill",
+      "runtime": "serv",
+      "createdAt": "2026-11-08T20:02:55.458Z",
+      "applications": [
+        {
+          "playbook": "v1",
+          "reppoEvalIds": [
+            "cmw89f5wo000408kulxkyq8od",
+            "cmw89f5vg000308kuzkg15jhi",
+            "cmw89f5yn000708i7i4at3pjp",
+            "cmw89f5tb000208kusd0th0c0"
+          ],
+          "reppoScores": [
+            97,
+            100,
+            98,
+            100
+          ],
+          "score": 822,
+          "tier": "probation",
+          "dailyLimit": 50
+        }
+      ]
+    },
+    {
+      "id": "run-2026-11-09-a",
+      "file": "data/runs/run-2026-11-09-a.json",
+      "kind": "single",
+      "pack": "procurement-pack-1",
+      "agent": "Quill",
+      "runtime": "serv",
+      "createdAt": "2026-11-08T19:49:00.122Z",
+      "applications": [
+        {
+          "playbook": "v1",
+          "reppoEvalIds": [
+            "cmw88x6tn000308i7qkwir1lj",
+            "cmw88x7p4000008kuyxe2gwg3",
+            "cmw88x6rr000208i71xxr7g1w"
+          ],
+          "reppoScores": [
+            100,
+            100,
+            97
+          ],
+          "score": 846,
+          "tier": "trusted",
+          "dailyLimit": 300
+        }
+      ]
+    }
+  ]
+}

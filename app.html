@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spendgrade · Credit report</title>
+  <meta name="description" content="A recorded Spendgrade credit check: Reppo's independent verdict, the SERV underwriting decision, and every step on the record.">
+  <link rel="icon" href="assets/img/mark.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;650;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body class="app">
+  <header class="topbar">
+    <a class="brand" href="index.html"><img src="assets/img/mark.svg" alt=""><span>Spendgrade</span></a>
+    <span class="topbar-sep"></span>
+    <span class="topbar-title">Credit report</span>
+    <div class="topbar-run" id="run-meta"></div>
+    <div class="topbar-actions">
+      <a class="btn btn-sm" href="index.html#api">API</a>
+      <a class="btn btn-sm" href="https://github.com/Automationbot24x7/spendgrade">Source</a>
+    </div>
+  </header>
+
+  <main class="wrap" id="report">
+    <section class="applicant" id="applicant"></section>
+    <section class="timeline" id="timeline" aria-label="Applications"></section>
+    <section class="grid3" id="main"></section>
+    <section class="block" id="work"></section>
+    <section class="block" id="trail"></section>
+    <section class="block" id="learned"></section>
+    <section class="block" id="export"></section>
+  </main>
+
+  <footer class="foot">
+    <span>Every number on this page comes from a recorded live run: Reppo Evaluation API verdicts and SERV Reasoning responses, saved verbatim in <code>data/runs/</code>. Spending amounts are simulated; Spendgrade never moves money.</span>
+  </footer>
+  <script src="assets/js/report.js" type="module"></script>
+</body>
+</html>

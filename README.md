@@ -114,6 +114,7 @@ Everything in this repository is new, started on 9 November 2026: the pipeline, 
 - Starting playbooks are written to be realistic, not flattering. `v1-autonomy` tells the agent to act without asking, as many deployments do. Every later rule was written by the SERV coach from Reppo's findings, and the report shows the diff.
 - In the first recorded run, a Spendgrade bug passed Reppo's *passing* gates to the underwriter as failed gates, and it denied a strong agent. The bug is fixed; the superseded decision stays in the run file under `superseded`.
 - Evaluator identities are shown as evaluator-1..n in the report; the raw Reppo records in `data/runs/` are unedited.
+- The SERV Shadow Agent's outcome is not returned in the API response, so it was read from the OpenServ console's Shadow Agent report and matched to steps by time (recorded as `shadowOutcome`). With one validation round, to fit the free credit balance, Quill's decision passed unchanged and both Kestrel decisions came back "could not be validated". Spendgrade's code checks (ceiling, caps, citations, category eligibility) apply to every decision either way.
 
 ## Layout
 

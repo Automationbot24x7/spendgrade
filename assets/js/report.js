@@ -279,7 +279,8 @@ function stepFeatures(s) {
     if (sf.shadowAgent) f.push('<span class="chip serv">Shadow agent</span>');
     if (sf.structuredOutput) f.push(`<span class="chip serv">Schema ${esc(s.schemaVersion)}</span>`);
     if (sf.reasoningEffort) f.push(`<span class="chip">effort ${esc(sf.reasoningEffort)}</span>`);
-    if (s.validation) f.push(`<span class="chip ${s.validation.ok ? 'ok' : 'bad'}">${s.validation.ok ? 'Validated' : 'Invalid'}</span>`);
+    if (s.validation) f.push(`<span class="chip ${s.validation.ok ? 'ok' : 'bad'}">${s.validation.ok ? 'Schema valid' : 'Invalid'}</span>`);
+    if (s.shadowOutcome) f.push(`<span class="chip ${s.shadowOutcome.outcome.startsWith('passed') ? 'ok' : 'warn'}" title="${esc(s.shadowOutcome.source)}, matched by ${esc(s.shadowOutcome.matchedBy)}">Shadow agent: ${esc(s.shadowOutcome.outcome)}</span>`);
   } else if (s.kind === 'external') {
     f.push('<span class="chip">no SERV</span>');
     if (s.validation) f.push(`<span class="chip ${s.validation.ok ? 'ok' : 'bad'}">${s.validation.ok ? 'Schema valid' : 'Schema invalid'}</span>`);
@@ -300,6 +301,7 @@ function stepBody(s) {
         <dt>Prompt</dt><dd>${esc(s.promptVersion)} · sha256 ${esc((s.systemPromptSha256 || '').slice(0, 16))}…</dd>
         <dt>Tokens</dt><dd>${esc(usage)} · finish ${esc(s.finishReason)}</dd>
         ${s.servFeatures?.shadowAgent ? `<dt>Shadow hint</dt><dd class="light">${esc(s.servFeatures.shadowAgent.hint)}</dd>` : ''}
+        ${s.shadowOutcome ? `<dt>Shadow outcome</dt><dd class="light">${esc(s.shadowOutcome.outcome)} (${esc(s.shadowOutcome.maxIterations)} round) · ${esc(s.shadowOutcome.source)}, matched by ${esc(s.shadowOutcome.matchedBy)} (${esc(s.shadowOutcome.consoleTime)})</dd>` : ''}
       </dl>
       <div class="sec-label">Typed output</div>
       <pre class="code">${esc(JSON.stringify(s.output, null, 2))}</pre>`;
@@ -325,7 +327,7 @@ function renderTrail(a) {
   const valid = servSteps.filter((s) => s.validation?.ok).length;
   $('#trail').innerHTML = `
     <div class="block-h"><div><h2>Decision trail</h2><p>Every step behind this decision, in order. SERV steps return typed JSON against a versioned schema, and Spendgrade validates each one again. Open a step for the full record.</p></div>
-      <span class="chip ok">${valid} of ${servSteps.length} SERV outputs validated</span></div>
+      <span class="chip ok">${valid} of ${servSteps.length} SERV outputs schema-valid</span></div>
     <article class="card trail">${rows}</article>`;
 }
 

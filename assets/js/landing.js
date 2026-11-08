@@ -6,8 +6,9 @@ const usd = (n, d = 0) => `$${Number(n).toLocaleString('en-US', { minimumFractio
 const TIER = { frozen: 'Frozen', deny: 'Denied', probation: 'Probation', standard: 'Standard', trusted: 'Trusted' };
 const ROUTE = { ship: 'ok', review: 'warn', block: 'bad' };
 const MODEL_NAMES = /\b(claude|gpt|gemini|deepseek|kimi|glm|llama|qwen|grok|mistral|sonnet|opus|haiku)[\w.\-]*/gi;
-const redact = (t) => String(t ?? '').replace(/\(\s*(claude|gpt|gemini|deepseek|kimi|glm|llama|qwen|grok|mistral)[\w.\-]*\s*\)/gi, '').replace(MODEL_NAMES, 'an evaluator').replace(/ {2,}/g, ' ');
+const redact = (t) => humanize(t).replace(/\(\s*(claude|gpt|gemini|deepseek|kimi|glm|llama|qwen|grok|mistral)[\w.\-]*\s*\)/gi, '').replace(MODEL_NAMES, 'an evaluator').replace(/ {2,}/g, ' ');
 
+const humanize = (t) => String(t ?? '').replace(/software_subscriptions/g, 'software subscriptions').replace(/invoice_payments/g, 'invoice payments').replace(/one_off_purchases/g, 'one-off purchases');
 addEventListener('scroll', () => $('.lp-top').classList.toggle('scrolled', scrollY > 8), { passive: true });
 
 const mean = (a) => Math.round(a.reppo.reduce((s, r) => s + r.ev.result.score, 0) / a.reppo.length);
@@ -19,21 +20,29 @@ function heroCard(loop, compare) {
   const k0 = loop.applications[0];
   const k = loop.applications.at(-1);
   const q = compare?.applications?.[0];
-  const col = (app, sub) => `
+  const blocker = (app) => {
+    const failed = app.audit.filter((c) => !c.pass);
+    if (!failed.length) return '<div class="hc-call ok">No policy violations across all six tasks</div>';
+    const tasks = [...new Set(failed.map((c) => c.task))];
+    const blocked = app.decision.blocked_categories.map((c) => humanize(c)).join(', ');
+    return `<div class="hc-call warn">Failed ${tasks.map((t) => `${esc(t)}, ${esc(title(loop, t))}`).join('; ')}. Blocked: ${esc(blocked)}.</div>`;
+  };
+  const col = (app, sub, from) => `
     <div class="hc-app">
       <span class="hc-label">${esc(app.agent)}</span>
       <span class="hc-sub">${sub}</span>
-      <div class="hc-score"><b>${app.score.score}</b><span>Spendgrade score</span></div>
+      <div class="hc-score">${from ? `<s>${from}</s>` : ''}<b>${app.score.score}</b><span>Spendgrade score</span></div>
       <span class="tier ${esc(app.decision.tier)}">${esc(TIER[app.decision.tier])}</span>
       <div class="hc-row"><span>Daily limit</span><b>${usd(app.decision.daily_limit_usd)}</b></div>
       <div class="hc-row"><span>Ground-truth checks</span><b>${passed(app)} of ${app.audit.length}</b></div>
       <div class="hc-row"><span>Categories allowed</span><b>${app.decision.allowed_categories.length} of 3</b></div>
+      ${blocker(app)}
       <div class="hc-routes">${app.reppo.map((r) => `<span class="chip ${ROUTE[r.ev.result.route] || ''}">${esc(r.task)} ${esc(r.ev.result.route)}</span>`).join('')}</div>
     </div>`;
   $('#hero-card').innerHTML = `
-    <div class="hc-top"><b>Same six tasks, same starting playbook</b><span>Recorded ${esc(new Date(loop.createdAt).toUTCString().slice(5, 16))}</span></div>
-    <div class="hc-apps">${col(k, 'Bring-your-own agent, no SERV, after one coaching cycle')}${q ? col(q, 'Built on SERV Reasoning') : ''}</div>
-    <div class="hc-foot"><b>${esc(k.agent)} improved:</b> score ${k0.score.score} to ${k.score.score}, checks ${passed(k0)} to ${passed(k)} of ${k.audit.length}. Its euro-pricing error persists, so software stays blocked. The two agents run on different models.</div>`;
+    <div class="hc-top"><b>Six procurement tasks with fraud traps</b><span>Recorded ${esc(new Date(loop.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }))}</span></div>
+    <div class="hc-apps">${col(k, 'Bring-your-own agent, no SERV, after one coaching cycle', k0.score.score)}${q ? col(q, 'Built on SERV Reasoning, same starting playbook') : ''}</div>
+    <div class="hc-foot"><b>${esc(k.agent)} improved</b> from ${passed(k0)} to ${passed(k)} of ${k.audit.length} checks after the SERV coach turned Reppo's findings into rules. Its limit stays on Probation until the pricing error is fixed. The two agents run on different models.</div>`;
 }
 
 function card(run, app, label, href) {
@@ -43,7 +52,7 @@ function card(run, app, label, href) {
       <div class="p-metrics">
         <div class="pm"><b>${app.score.score}</b><span>Spendgrade score</span></div>
         <div class="pm"><b>${usd(app.decision.daily_limit_usd)}</b><span>a day</span></div>
-        <div class="pm"><b>${passed(app)}/${app.audit.length}</b><span>ground-truth checks</span></div>
+        <div class="pm"><b>${passed(app)}/${app.audit.length}</b><span>checks passed</span></div>
       </div>
       <div class="p-tasks">${app.reppo.map((r) => `<div class="pt"><span>${esc(r.task)} · ${esc(title(run, r.task))}</span><span class="s">${r.ev.result.score}</span><span class="chip ${ROUTE[r.ev.result.route] || ''}">${esc(r.ev.result.route)}</span></div>`).join('')}</div>
       <p class="p-sum">${esc(redact(app.decision.summary))}</p>

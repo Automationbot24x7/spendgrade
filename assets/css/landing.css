@@ -104,3 +104,13 @@ body.lp { min-width: 1120px; }
 .hc-sub { font-size: 12.5px; color: var(--muted); margin-top: -8px; line-height: 1.4; min-height: 34px; }
 .hc-label { font-size: 15px !important; letter-spacing: -0.01em !important; text-transform: none !important; color: var(--ink) !important; font-weight: 700 !important; }
 .hc-app .tier { align-self: flex-start; }
+
+.hc-score s { font-size: 22px; font-weight: 600; color: var(--faint); margin-right: 4px; letter-spacing: -0.02em; text-decoration-thickness: 2px; }
+.hc-call { font-size: 12.5px; line-height: 1.45; font-weight: 600; padding: 8px 10px; border-radius: 8px; }
+.hc-call.warn { background: var(--probation-soft); color: #93370d; }
+.hc-call.ok { background: var(--standard-soft); color: #05603a; }
+.proof { align-items: stretch; }
+.proof .card { justify-content: flex-start; }
+.proof .p-sum { margin-top: auto; }
+.proof .pm span { font-size: 12px; line-height: 1.3; display: block; }
+.api-grid pre.code { padding-bottom: 24px; }

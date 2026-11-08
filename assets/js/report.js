@@ -16,7 +16,9 @@ const ICON = {
 
 // Reppo's notes sometimes name the evaluator models; the viewer shows them as evaluators.
 const MODEL_NAMES = /\b(claude|gpt|gemini|deepseek|kimi|glm|llama|qwen|grok|mistral|sonnet|opus|haiku)[\w.\-]*(\s*\([^)]*\))?/gi;
-const redact = (t) => String(t ?? '').replace(/\(\s*(claude|gpt|gemini|deepseek|kimi|glm|llama|qwen|grok|mistral)[\w.\-]*\s*\)/gi, '').replace(MODEL_NAMES, 'an evaluator').replace(/ {2,}/g, ' ');
+const redact = (t) => humanize(t).replace(/\(\s*(claude|gpt|gemini|deepseek|kimi|glm|llama|qwen|grok|mistral)[\w.\-]*\s*\)/gi, '').replace(MODEL_NAMES, 'an evaluator').replace(/ {2,}/g, ' ');
+const humanize = (t) => String(t ?? '').replace(/software_subscriptions/g, 'software subscriptions').replace(/invoice_payments/g, 'invoice payments').replace(/one_off_purchases/g, 'one-off purchases');
+const cap = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 const evDomId = (id) => `ev-${String(id).replace(/[^\w-]/g, '_')}`;
 const params = new URLSearchParams(location.search);
 let run = null;
@@ -35,10 +37,9 @@ async function boot() {
     let runs = [];
     if (!file) {
       const idx = await fetch('data/runs/index.json', { cache: 'no-store' }).then((r) => r.json());
-      runs = idx.runs.filter((r) => r.kind === 'loop');
-      if (!runs.length) runs = idx.runs;
+      runs = idx.runs;
       const want = params.get('run');
-      file = (runs.find((r) => r.id === want) || runs[0])?.file;
+      file = (runs.find((r) => r.id === want) || runs.find((r) => r.kind === 'loop') || runs[0])?.file;
     }
     if (!file) throw new Error('No recorded runs yet');
     run = await fetch(file, { cache: 'no-store' }).then((r) => r.json());
@@ -52,12 +53,15 @@ async function boot() {
 
 function renderRunMeta(runs) {
   const d = new Date(run.createdAt);
-  const when = d.toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) + ' UTC';
-  const sel = runs.length > 1
-    ? `<select id="run-pick" aria-label="Recorded run">${runs.map((r) => `<option value="${esc(r.id)}" ${r.id === run.id ? 'selected' : ''}>${esc(r.id)}</option>`).join('')}</select>`
-    : `<span class="chip id">${esc(run.id)}</span>`;
-  $('#run-meta').innerHTML = `<span>Recorded live run</span>${sel}<span>${esc(when)}</span>`;
-  $('#run-pick')?.addEventListener('change', (e) => { location.search = `?run=${encodeURIComponent(e.target.value)}`; });
+  run.when = d.toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) + ' UTC';
+  const mainPack = (runs.find((r) => r.kind === 'loop') || runs[0])?.pack;
+  const main = runs.filter((r) => r.pack === mainPack);
+  const earlier = runs.filter((r) => r.pack !== mainPack);
+  const tabs = main.length > 1 ? `<div class="agent-switch" role="tablist" aria-label="Agents">${main.map((r) => `<a role="tab" aria-selected="${r.id === run.id}" href="?run=${encodeURIComponent(r.id)}"><b>${esc(r.agent || r.id)}</b><span>${esc(r.runtime === 'external' ? 'Bring-your-own, no SERV' : 'Built on SERV')}</span></a>`).join('')}</div>` : '';
+  const sel = earlier.length ? `<select id="run-pick" aria-label="Earlier runs"><option value="">Earlier runs</option>${earlier.map((r) => `<option value="${esc(r.id)}" ${r.id === run.id ? 'selected' : ''}>${esc(r.agent)} · ${esc(r.pack || r.id)}</option>`).join('')}</select>` : '';
+  $('#run-meta').innerHTML = tabs;
+  $('#run-earlier').innerHTML = sel;
+  $('#run-pick')?.addEventListener('change', (e) => { if (e.target.value) location.search = `?run=${encodeURIComponent(e.target.value)}`; });
 }
 
 function render() {
@@ -78,7 +82,7 @@ function renderApplicant(a) {
       <span class="eyebrow">Applicant</span>
       <h1>${esc(a.agent)} <span class="role">procurement agent</span></h1>
       <div class="meta-row"><span class="chip ${a.runtime === 'external' ? '' : 'serv'}">${a.runtime === 'external' ? 'Bring-your-own agent: direct model call, no SERV' : 'Runs on SERV Reasoning'}</span></div>
-      <p class="sub">Larkspur Studio (sample company) · graded on audit pack <code>${esc(run.pack || 'procurement-pack-1')}</code></p>
+      <p class="sub">Larkspur Studio (sample company) · audit pack <code>${esc(run.pack || 'procurement-pack-1')}</code> · recorded live ${esc(run.when || '')} · <code>${esc(run.id)}</code></p>
     </div>
     <div class="req">
       <span class="req-l">Requested</span><b>${usd(r.daily_limit_usd)} a day</b><span class="dot-sep"></span><b>${usd(r.per_tx_limit_usd)} per transaction</b>
@@ -90,7 +94,7 @@ function renderTimeline(apps) {
   const tab = (a, i) => `
     <button class="app-tab" role="tab" aria-selected="${i === current}" data-i="${i}">
       <span class="n">${i + 1}</span>
-      <span class="t"><b>Application ${i + 1} · playbook ${esc(a.playbookVersion)}</b><span>${i === 0 ? (a.playbook?.origin?.includes('Autonomy') ? 'Starting playbook: autonomy-first' : 'Starting playbook') : "After learning from Reppo's findings"}</span></span>
+      <span class="t"><b>Application ${i + 1} · ${esc(a.playbookVersion)}</b><span>${i === 0 ? (a.playbook?.origin?.includes('Autonomy') ? 'Starting playbook: autonomy-first' : 'Starting playbook') : "After learning from Reppo's findings"}</span></span>
       <span class="m">
         <span class="metric"><b>${reppoMean(a) ?? '-'}</b><span>Reppo avg</span></span>
         <span class="metric"><b>${a.score?.score ?? '-'}</b><span>Score</span></span>
@@ -173,8 +177,8 @@ function renderMain(a) {
           <div class="limit"><b>${usd(d.per_tx_limit_usd)}</b><span>per transaction</span></div>
         </div>
         <div class="cats">${cats}</div>
-        <p class="summary">${esc(redact(d.summary))}</p>
-        ${d.conditions.length ? `<div><div class="sec-label">Conditions</div><ul class="conds">${d.conditions.map((c) => `<li>${esc(redact(c))}</li>`).join('')}</ul></div>` : ''}
+        <p class="summary">${esc(cap(redact(d.summary)))}</p>
+        ${d.conditions.length ? `<div><div class="sec-label">Conditions</div><ul class="conds">${d.conditions.map((c) => `<li>${esc(cap(redact(c)))}</li>`).join('')}</ul></div>` : ''}
         <div class="meta-row">
           <span class="chip ${d.human_review_required ? 'warn' : 'ok'}">${d.human_review_required ? 'Human review required' : 'No human review needed'}</span>
           <span class="chip">${d.next_review_after_tasks ? `Re-grade after ${d.next_review_after_tasks} tasks` : 'Re-apply after coaching'}</span>
@@ -211,7 +215,7 @@ function renderMain(a) {
       <span>${esc(c.check)}<br><span class="obs">${esc(c.task)} · observed: ${esc(JSON.stringify(c.observed))}</span></span>
     </div>`).join('');
   const reasons = d.reasons.map((r) => `
-    <div class="reason"><p>${esc(redact(r.statement))}</p>
+    <div class="reason"><p>${esc(cap(redact(r.statement)))}</p>
       <div class="ev">${r.evidence.map((e) => `<button class="chip id" data-ev="${esc(e)}" title="${esc(e)}">${esc(evidenceLabel(e))}</button>`).join('')}</div>
     </div>`).join('');
   const ov = a.overrides?.length
@@ -329,7 +333,7 @@ const ships = (a) => (a.reppo || []).filter((r) => r.ev.result.route === 'ship')
 function changeRows(before, after) {
   return after.reppo.map((r) => {
     const b = before.reppo.find((x) => x.task === r.task);
-    const cell = (x) => `<span class="sc">${x.ev.result.score}</span> <span class="chip ${ROUTE_CLASS[x.ev.result.route] || ''}">${esc(x.ev.result.route)}</span>`;
+    const cell = (x) => `<span class="sc">${x.ev.result.score}</span> <span class="chip ${ROUTE_CLASS[x.ev.result.route] || ''}">${esc(x.ev.result.route)}</span> <span class="conf">${esc(x.ev.result.confidence)} confidence</span>`;
     const chk = (app) => { const c = app.audit.filter((a) => a.task === r.task); const p = c.filter((a) => a.pass).length; return `<span class="chip ${p === c.length ? 'ok' : 'bad'}">${p} of ${c.length}</span>`; };
     return `<tr><td>${esc(r.task)} · ${esc(taskTitle(r.task))}</td><td>${b ? cell(b) : '-'}</td><td>${cell(r)}</td><td>${chk(before)}</td><td>${chk(after)}</td></tr>`;
   }).join('');
@@ -348,7 +352,7 @@ function renderLearned() {
   $('#learned').innerHTML = `
     <div class="block-h"><div><h2>What ${esc(before.agent)} learned</h2><p>The SERV coach read Reppo's findings on application 1 and rewrote ${esc(before.agent)}'s playbook. Nothing else changed between the two applications: same tasks, same model, same underwriter.</p></div>
       <div class="meta-row"><span class="chip reppo">Ship verdicts ${delta(ships(before), ships(after))} of ${after.reppo.length}</span><span class="chip">Checks ${delta(passed(before), passed(after))} of ${after.audit.length}</span><span class="chip ok">Score ${delta(before.score.score, after.score.score)}</span></div></div>
-    <article class="card changes"><div class="card-h"><h3>Task by task</h3><span class="chip">application 1 to application 2</span></div><div class="card-b"><table class="chg"><thead><tr><th>Task</th><th>Reppo before</th><th>Reppo after</th><th>Checks before</th><th>Checks after</th></tr></thead><tbody>${changeRows(before, after)}</tbody></table></div></article>
+    <article class="card changes"><div class="card-h"><h3>Task by task</h3><span class="chip">application 1 to application 2</span></div><div class="card-b"><table class="chg"><thead><tr><th>Task</th><th>Reppo before</th><th>Reppo after</th><th>Checks before</th><th>Checks after</th></tr></thead><tbody>${changeRows(before, after)}</tbody></table><p class="chg-note">Each application is judged by a fresh evaluator panel. Small moves on tasks the coach did not touch (and a review at high score with medium confidence) are panel variation, not regressions in the agent's decision.</p></div></article>
     <div class="learned">
       <article class="card"><div class="card-h"><h3>Diagnosis from the findings</h3><span class="chip serv">SERV coach</span></div><div class="card-b"><div class="diag">${diag}</div><p class="expect">${esc(c.patch.expected_effect)}</p></div></article>
       <article class="card"><div class="card-h"><h3>Playbook ${esc(c.from)} to ${esc(c.to)}</h3><span class="chip">reasoning effort ${esc(c.playbook.reasoningEffort)}</span></div><div class="card-b"><div class="pb">${removed}${kept}${adds}</div></div></article>
